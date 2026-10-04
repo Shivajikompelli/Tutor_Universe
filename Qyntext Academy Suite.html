@@ -1,0 +1,620 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Qyntext Academy Suite</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<script>(function(){try{var l=document.createElement("link");l.rel="stylesheet";l.href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap";document.head.appendChild(l)}catch(e){}})();</script>
+<style>
+/* Layout concept: a short ruled-notebook opener, then one app shell with ten screens that share the same records, led by charts, meters and colour blocks instead of text. */
+:root{
+  --bg:#F2F4F9; --surface:#FFFFFF; --surface-2:#E8ECF6; --ink:#14213D; --muted:#566079; --line:#D9DFEC; --rule:#E4E9F4;
+  --primary:#1F3A93; --on-primary:#FFFFFF; --accent:#F2A900; --on-accent:#14213D;
+  --good:#17794D; --good-bg:#DDF3E8; --warn:#8A5300; --warn-bg:#FFEDC7; --bad:#B02E2E; --bad-bg:#FBDEDE; --info-bg:#E1E7FA;
+  --c1:#DCE6FB; --c2:#D9F0E6; --c3:#FCEBC2; --c4:#EBDDF7;
+  --phone-edge:#14213D; --chat-bg:#DCE4F1; --bubble:#FFFFFF;
+  --font-display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --font-body:"Instrument Sans","Segoe UI",system-ui,sans-serif;
+  --font-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0D1324; --surface:#141C33; --surface-2:#1B2540; --ink:#E7ECF8; --muted:#9AA5C0; --line:#27324F; --rule:#131B31;
+    --primary:#8EA2F5; --on-primary:#0D1324; --accent:#F5B82E; --on-accent:#14213D;
+    --good:#5ED39A; --good-bg:#12362A; --warn:#F2B64F; --warn-bg:#3A2C0F; --bad:#F28B8B; --bad-bg:#3D1A1E; --info-bg:#1E2850;
+    --c1:#22305C; --c2:#143B2E; --c3:#43330F; --c4:#35244A;
+    --phone-edge:#3A4666; --chat-bg:#0A0F1E; --bubble:#1E2845;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0D1324; --surface:#141C33; --surface-2:#1B2540; --ink:#E7ECF8; --muted:#9AA5C0; --line:#27324F; --rule:#131B31;
+  --primary:#8EA2F5; --on-primary:#0D1324; --accent:#F5B82E; --on-accent:#14213D;
+  --good:#5ED39A; --good-bg:#12362A; --warn:#F2B64F; --warn-bg:#3A2C0F; --bad:#F28B8B; --bad-bg:#3D1A1E; --info-bg:#1E2850;
+  --c1:#22305C; --c2:#143B2E; --c3:#43330F; --c4:#35244A;
+  --phone-edge:#3A4666; --chat-bg:#0A0F1E; --bubble:#1E2845;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 var(--font-body)}
+h1,h2,h3,h4{font-family:var(--font-display);margin:0;text-wrap:balance;line-height:1.12}
+p{margin:0}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
+.wrap{max-width:1180px;margin-inline:auto;padding-inline:16px}
+.muted{color:var(--muted)} .small{font-size:13px} .num{font-variant-numeric:tabular-nums}
+
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+.top-in{display:flex;align-items:center;justify-content:space-between;gap:8px 20px;padding-block:12px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);font:600 16px var(--font-display)}
+.brand b{font-weight:800}
+.mark{width:22px;height:22px;border-radius:6px;background:var(--primary);position:relative;display:inline-block}
+.mark::after{content:"";position:absolute;right:4px;bottom:4px;width:8px;height:8px;border-radius:50%;background:var(--accent)}
+.top-nav{display:flex;gap:6px 18px}
+.top-nav a{color:var(--muted);text-decoration:none;font-weight:500;font-size:14px}
+
+.hero{border-bottom:1px solid var(--line);background-image:repeating-linear-gradient(to bottom,transparent 0 35px,var(--rule) 35px 36px)}
+.hero-in{padding-block:44px 40px}
+.eyebrow{font:500 12px var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--primary);margin-bottom:12px}
+.hero h1{font-size:clamp(2.1rem,5.4vw,3.7rem);font-weight:800;letter-spacing:-.02em;max-width:16ch}
+.lead{margin-top:14px;font-size:17px;color:var(--muted);max-width:44ch}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 16px;border-radius:9px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font-weight:600;font-size:14px;cursor:pointer;text-decoration:none;line-height:1.2}
+.btn:hover{border-color:var(--primary)}
+.btn.primary{background:var(--primary);border-color:var(--primary);color:var(--on-primary)}
+.btn.sm{padding:5px 10px;font-size:13px;border-radius:7px}
+.btn[disabled]{opacity:.6;cursor:default}
+.hero .btn{margin-top:22px}
+
+.sec{padding-block:48px}
+.sec h2{font-size:clamp(1.5rem,3vw,2.1rem);font-weight:800;letter-spacing:-.01em}
+.demo{background:var(--surface-2)}
+.head-row{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+.tag{display:inline-block;font:500 12px var(--font-mono);background:var(--warn-bg);color:var(--warn);padding:5px 9px;border-radius:7px}
+
+.shell{display:grid;grid-template-columns:176px minmax(0,1fr);gap:20px;align-items:start}
+.side{position:sticky;top:calc(env(safe-area-inset-top,0px) + 70px);display:grid;gap:2px}
+.navbtn{display:flex;justify-content:space-between;align-items:center;gap:8px;text-align:left;padding:9px 12px;border-radius:8px;border:0;background:none;color:var(--muted);font-weight:500;font-size:14px;cursor:pointer}
+.navbtn:hover{background:var(--surface);color:var(--ink)}
+.navbtn.on{background:var(--primary);color:var(--on-primary)}
+.bdg{background:var(--accent);color:var(--on-accent);font:600 11px var(--font-body);min-width:20px;padding:1px 6px;border-radius:99px;text-align:center}
+.stage{min-width:0;display:grid;gap:14px;align-content:start}
+.vhead{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.vhead h3{font-size:1.45rem;font-weight:800}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;min-width:0;display:grid;gap:12px;align-content:start}
+.panel h4,.lab{font:600 11.5px var(--font-body);text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.hint{font-size:13px;color:var(--muted)}
+
+.pill{display:inline-block;padding:2px 9px;border-radius:99px;font-size:12px;font-weight:600;white-space:nowrap}
+.pill.good{background:var(--good-bg);color:var(--good)} .pill.warn{background:var(--warn-bg);color:var(--warn)} .pill.bad{background:var(--bad-bg);color:var(--bad)} .pill.info{background:var(--info-bg);color:var(--primary)}
+.meter{display:inline-block;width:70px;height:7px;border-radius:99px;background:var(--surface-2);vertical-align:middle;overflow:hidden;margin-right:8px}
+.meter.w{display:block;width:100%;margin:0}
+.meter i{display:block;height:100%;background:var(--good)} .meter.low i{background:var(--bad)} .meter.pr i{background:var(--primary)}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:99px;padding:5px 12px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer}
+.chip[aria-pressed=true]{background:var(--primary);color:var(--on-primary);border-color:var(--primary)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.row.sb{justify-content:space-between}
+
+.ring-row{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.ring{width:128px;height:128px;flex:none}
+.ring .trk{fill:none;stroke:var(--surface-2);stroke-width:14}
+.ring .arc{fill:none;stroke:var(--primary);stroke-width:14;stroke-linecap:round;transition:stroke-dasharray .6s ease}
+.ring .arc.g{stroke:var(--good)} .ring .arc.b{stroke:var(--bad)}
+.ring text{fill:var(--ink);font:800 25px var(--font-display);text-anchor:middle}
+.big{font:800 1.5rem/1.1 var(--font-display);font-variant-numeric:tabular-nums}
+.spark{width:100%;height:auto;display:block}
+.bar{fill:var(--primary)} .bar.today{fill:var(--accent)}
+.tick{fill:var(--muted);font-size:11px;font-family:var(--font-body)}
+.stack{display:flex;height:20px;border-radius:7px;overflow:hidden;background:var(--surface-2)}
+.stack i{display:block;height:100%;transition:width .6s ease}
+.legend{display:flex;gap:6px 16px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.legend b{color:var(--ink)}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px}
+.flash{animation:flash .9s ease-out}
+@keyframes flash{0%{box-shadow:0 0 0 3px var(--accent)}100%{box-shadow:0 0 0 0 transparent}}
+
+.list{list-style:none;margin:0;padding:0;display:grid}
+.list li{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line)}
+.list li:last-child{border-bottom:0}
+.list .t{min-width:0}
+.list .t b{font-weight:600}
+.list .t span{display:block;font-size:13px;color:var(--muted)}
+.cls{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 12px;border-radius:10px}
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+table{border-collapse:collapse;width:100%}
+th{text-align:left;font:600 11px var(--font-body);letter-spacing:.07em;text-transform:uppercase;color:var(--muted);padding:10px 14px;border-bottom:1px solid var(--line)}
+td{padding:10px 14px;border-bottom:1px solid var(--line);font-size:14px}
+tr:last-child td{border-bottom:0}
+tr.click{cursor:pointer} tr.click:hover td{background:var(--surface-2)}
+.field{display:grid;gap:4px;min-width:0}
+.field label{font-size:12px;font-weight:600;color:var(--muted)}
+input[type=text],input[type=search],select,textarea{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:9px 10px;min-width:0;max-width:100%}
+textarea{resize:vertical;min-height:84px;width:100%}
+
+.stu{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface);cursor:pointer;text-align:left}
+.stu:hover{border-color:var(--primary)}
+.stu b{font-weight:600}
+.stu .stat{font-size:12.5px;font-weight:700;padding:3px 10px;border-radius:99px;background:var(--good-bg);color:var(--good);min-width:74px;text-align:center}
+.stu.l .stat{background:var(--warn-bg);color:var(--warn)}
+.stu.a{background:var(--bad-bg)} .stu.a .stat{background:var(--bad);color:var(--surface)}
+.roster{display:grid;gap:6px}
+
+.kanban{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.kcol{background:var(--surface-2);border-radius:12px;padding:10px;display:grid;gap:8px;align-content:start}
+.kcol h4{font:700 .9rem var(--font-display);display:flex;justify-content:space-between}
+.enq{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px;display:grid;gap:6px;font-size:13.5px}
+
+.tt{min-width:560px}
+.tt th,.tt td{text-align:center;padding:6px;vertical-align:top}
+.tt th:first-child,.tt td:first-child{text-align:left;white-space:nowrap;font-size:12.5px}
+.tt .today{background:var(--info-bg)}
+.blk{border-radius:8px;padding:6px 8px;font-size:12px;font-weight:600;margin-bottom:4px;text-align:left;line-height:1.25}
+.blk span{display:block;font-weight:400;color:var(--muted)}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px;display:grid;gap:8px;align-content:start}
+.av{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font:700 14px var(--font-display);flex:none}
+
+.phone{width:min(100%,330px);margin-inline:auto;border:8px solid var(--phone-edge);border-radius:34px;background:var(--chat-bg);overflow:hidden}
+.phone-top{background:var(--primary);color:var(--on-primary);padding:12px 14px;font-weight:600;font-size:14px;display:flex;justify-content:space-between;gap:8px}
+.phone-top small{font-weight:400;opacity:.9}
+.chat{padding:12px;display:grid;gap:8px;max-height:340px;overflow:auto;align-content:start}
+.bubble{background:var(--bubble);border-radius:12px 12px 12px 4px;padding:8px 10px;font-size:13.5px;box-shadow:0 1px 0 rgba(0,0,0,.1);overflow-wrap:anywhere;animation:pop .35s ease-out}
+.bubble.me{background:var(--primary);color:var(--on-primary);border-radius:12px 12px 4px 12px;margin-left:28px}
+.bubble.rc{border-left:4px solid var(--good)}
+.bubble time{display:block;font-size:11px;opacity:.7;text-align:right;margin-top:3px}
+@keyframes pop{from{transform:translateY(8px);opacity:0}to{transform:none;opacity:1}}
+.screen{padding:12px;display:grid;gap:10px;background:var(--surface-2)}
+.pcard{background:var(--surface);border-radius:12px;padding:12px;display:grid;gap:8px;font-size:13.5px}
+.dots{display:flex;gap:5px;flex-wrap:wrap}
+.dots i{width:14px;height:14px;border-radius:50%;background:var(--good)} .dots i.a{background:var(--bad)}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,340px);gap:14px;align-items:start}
+
+.ba{display:grid;gap:10px;margin-top:20px}
+.ba-row{display:grid;grid-template-columns:minmax(0,1fr) 36px minmax(0,1fr);align-items:center;gap:10px}
+.ba-row .b{padding:14px 16px;border-radius:12px;border:1px dashed var(--line);color:var(--muted);text-decoration:line-through;text-decoration-color:var(--bad)}
+.ba-row .a{padding:14px 16px;border-radius:12px;background:var(--primary);color:var(--on-primary);font-weight:600}
+.ba-row svg{width:36px;height:20px;display:block}
+.ba-row path{fill:none;stroke:var(--muted);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+footer{border-top:1px solid var(--line);padding-block:24px;color:var(--muted);font-size:13px}
+
+.modal{position:fixed;inset:0;background:rgba(10,15,30,.55);display:grid;place-items:center;padding:16px;z-index:50}
+.modal-card{background:var(--surface);border:1px solid var(--line);border-radius:14px;max-width:460px;width:100%;max-height:90vh;overflow:auto;padding:18px;display:grid;gap:14px}
+.modal-card h3{font-size:1.25rem}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;z-index:60;max-width:calc(100% - 32px);font-size:14px;font-weight:500}
+.stage>*{animation:enter .45s ease-out}
+@keyframes enter{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:none}}
+.lead{max-width:54ch}
+.meta{display:flex;gap:6px 22px;flex-wrap:wrap;margin-top:22px;font-size:13px;color:var(--muted)}
+.meta b{color:var(--ink)}
+.sub{color:var(--muted);font-size:14px;margin-top:2px}
+.sub2{margin-top:8px;color:var(--muted)}
+.cap{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 14px}
+.cap>span:first-child{font-weight:600;min-width:0}
+.prog{height:4px;background:transparent;border-radius:99px;overflow:hidden;margin:6px 0 14px}
+.prog i{display:block;height:100%;width:0;background:var(--accent);transition:width .6s ease}
+.scene{display:grid;grid-template-columns:minmax(0,1fr) 34px minmax(0,320px) 34px minmax(0,1fr);align-items:stretch}
+.scol{display:grid;gap:8px;min-width:0;align-content:start}
+.step{display:flex;align-items:center;gap:8px;font:700 14px var(--font-display)}
+.step i{font-style:normal;width:22px;height:22px;border-radius:50%;background:var(--accent);color:var(--on-accent);display:grid;place-items:center;font:700 12px var(--font-body)}
+.pipe{align-self:center;height:34px;position:relative}
+.pipe::before{content:"";position:absolute;left:4px;right:4px;top:16px;border-top:2px dashed var(--line)}
+.pipe b{position:absolute;top:10px;left:0;width:12px;height:12px;border-radius:50%;background:var(--accent);opacity:0}
+.pipe.go b{animation:travel 1s ease-in-out}
+@keyframes travel{0%{left:0;opacity:1}100%{left:calc(100% - 12px);opacity:1}}
+.stu.sel{border-color:var(--primary);box-shadow:0 0 0 2px var(--info-bg)}
+.pfee{margin:0 12px 10px;background:var(--surface);border-radius:12px;padding:10px 12px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.pchips{display:flex;gap:6px;flex-wrap:wrap;padding:0 12px 12px}
+.cmp{margin-top:18px}
+.cmp td:first-child{font-weight:600;white-space:nowrap}
+.cmp td:nth-child(2){color:var(--muted)}
+.cmp td:nth-child(3){font-weight:600}
+.cmp th:nth-child(3){color:var(--primary)}
+.hub{width:100%;height:auto;display:block;margin-top:10px}
+.hub line{stroke:var(--line);stroke-width:1.5}
+.hub .nd{fill:var(--surface);stroke:var(--line);stroke-width:1.5}
+.hub g{cursor:pointer} .hub g:hover .nd,.hub g:focus-visible .nd{stroke:var(--primary);fill:var(--info-bg)}
+.hub text{fill:var(--ink);font:600 13px var(--font-body);text-anchor:middle;pointer-events:none}
+.hub .core{fill:var(--primary)} .hub .ct{fill:var(--on-primary);font:700 14px var(--font-display)}
+.fit-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-top:18px}
+.fit{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px;display:grid;gap:4px;align-content:start}
+.fit b{font:700 1rem var(--font-display)}
+.fit span{font-size:13.5px;color:var(--muted)}
+.addons{margin-top:16px;font-size:14px;color:var(--muted)}
+.addons b{color:var(--ink)}
+@media (max-width:1000px){.scene{grid-template-columns:minmax(0,1fr);gap:16px}.pipe{display:none}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+@media (max-width:860px){
+  .shell{grid-template-columns:minmax(0,1fr)}
+  .side{position:static;display:flex;overflow-x:auto;gap:6px;padding-bottom:6px}
+  .navbtn{white-space:nowrap;flex:none}
+  .grid2,.two,.kanban{grid-template-columns:minmax(0,1fr)}
+  .sec{padding-block:34px}
+}
+@media (max-width:560px){
+  .ba-row{grid-template-columns:minmax(0,1fr)}
+  .ba-row svg{transform:rotate(90deg);justify-self:center}
+}
+</style>
+
+<header class="top">
+  <div class="wrap top-in">
+    <a class="brand" href="#top"><span class="mark" aria-hidden="true"></span><span>Qyntext <b>Academy Suite</b></span></a>
+    <nav class="top-nav" aria-label="Sections"><a href="#demo">Live demo</a><a href="#why">Why</a></nav>
+  </div>
+</header>
+
+<main>
+<section class="hero" id="top">
+  <div class="wrap hero-in">
+    <p class="eyebrow">Tuition centers · Coaching · Small schools</p>
+    <h1>Your whole academy, one tap away.</h1>
+    <p class="lead">Attendance, fees, staff, study material and parent communication run from one screen. Owners stop chasing paper. Parents stop chasing answers.</p>
+    <div class="meta"><span><b>Sample client</b> Akshara Academy, L.B Nagar</span><span>Thota Nilayam, Arunodayanagar Rd No. 1, Kakatiya Colony</span><span>Classes from 5 pm</span><span>5.0 on Google · 68 reviews</span></div>
+    <a class="btn primary" href="#demo">Try it</a>
+  </div>
+</section>
+
+<section class="sec demo" id="demo">
+  <div class="wrap">
+    <div class="head-row"><h2>Live demo</h2><span class="tag">Sample data</span></div>
+    <div class="cap"><span id="capText">Press Play tour to watch every screen run, or click anything.</span><span class="row"><button type="button" class="btn primary sm" id="tourBtn" data-act="tour">Play tour</button><button type="button" class="btn sm" data-act="runScene">Run the scene</button><button type="button" class="btn sm" data-act="reset">Reset</button></span></div>
+    <div class="prog" id="prog"><i></i></div>
+    <div class="shell">
+      <nav class="side" id="side" aria-label="Screens"></nav>
+      <div class="stage" id="app"></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="why">
+  <div class="wrap">
+    <h2>What changes</h2>
+    <div class="tbl-wrap cmp"><table>
+      <thead><tr><th>Task</th><th>Today</th><th>With the suite</th></tr></thead>
+      <tbody>
+        <tr><td>Attendance</td><td>Paper register, totals by hand</td><td>One tap, live percentages</td></tr>
+        <tr><td>Absent students</td><td>Tutor calls, or forgets</td><td>Parent told in seconds</td></tr>
+        <tr><td>Fees</td><td>Notebook and calls near the 10th</td><td>Live dues, receipts, reminders</td></tr>
+        <tr><td>Parent questions</td><td>Scattered across phones</td><td>One inbox, replies on record</td></tr>
+        <tr><td>Tutors</td><td>Leave and salary unrecorded</td><td>Leave marked once, payroll visible</td></tr>
+        <tr><td>Admissions</td><td>Slips of paper</td><td>Pipeline with seats left</td></tr>
+      </tbody></table></div>
+  </div>
+</section>
+
+<section class="sec" id="all" style="padding-top:0">
+  <div class="wrap">
+    <h2>One record behind every screen</h2>
+    <p class="sub2">Tap a module to open it in the demo.</p>
+    <svg class="hub" id="hub" viewBox="0 0 600 340" role="group" aria-label="Student record connected to eight modules"></svg>
+    <div class="fit-grid">
+      <div class="fit"><b>Tuition centers</b><span>Batches, registers, monthly fees, parent messages.</span></div>
+      <div class="fit"><b>Small schools</b><span>Term fees, report cards, circulars, transport.</span></div>
+      <div class="fit"><b>Coaching institutes</b><span>Weekly tests, rank lists, faculty timetables.</span></div>
+      <div class="fit"><b>Hobby academies</b><span>Levels, monthly plans, exam and event reminders.</span></div>
+    </div>
+    <p class="addons"><b>Add-ons:</b> UPI payments · QR attendance · Telugu messages · multi-branch · exams and rank lists · transport alerts</p>
+  </div>
+</section>
+</main>
+
+<footer><div class="wrap"><b style="color:var(--ink)">Qyntext Experts</b>, Hyderabad. Sample built from public details of Akshara Academy, L.B Nagar. All names, fees and messages are fictional and simulated. Not affiliated with the academy.</div></footer>
+<div class="modal" id="modal" hidden><div class="modal-card" id="modalCard" role="dialog" aria-modal="true"></div></div>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script>
+(function(){
+'use strict';
+var $=function(s){return document.querySelector(s)};
+var esc=function(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
+var INR=function(n){return '₹'+Math.round(n).toLocaleString('en-IN')};
+var now=function(){return new Date().toLocaleTimeString('en-IN',{hour:'numeric',minute:'2-digit',hour12:true}).toLowerCase()};
+var TODAY='Sat', WEEK=['Mon','Tue','Wed','Thu','Fri','Sat'], SLOT={S1:'5:00 pm',S2:'6:30 pm'};
+var NEXT={Mon:'Mon 5 Oct',Tue:'Tue 6 Oct',Wed:'Wed 7 Oct',Thu:'Thu 8 Oct',Fri:'Fri 9 Oct',Sat:'Sat 10 Oct'};
+var HIST=[92,89,94,91,88,93];
+
+var TUTORS=[
+ {id:'t1',name:'Ramesh Babu',sub:'Maths',salary:32000,paid:true,leave:false,c:'var(--c1)'},
+ {id:'t2',name:'Sunitha Rao',sub:'Science',salary:28000,paid:true,leave:false,c:'var(--c2)'},
+ {id:'t3',name:'Kiran Kumar',sub:'Maths & Science',salary:24000,paid:false,leave:false,c:'var(--c3)'}
+];
+var BATCHES=[
+ {id:'b1',name:'Class 8 Maths & Science',days:['Tue','Thu','Sat'],slot:'S1',room:'Room B',tutor:'t3',cap:8,fee:1800,c:'var(--c3)',hw:'Linear equations, exercise 2.1'},
+ {id:'b2',name:'Class 9 Maths',days:['Mon','Wed','Fri'],slot:'S2',room:'Room A',tutor:'t1',cap:8,fee:2200,c:'var(--c1)',hw:'Polynomials, exercise 2.3'},
+ {id:'b3',name:'Class 10 Maths',days:['Tue','Thu','Sat'],slot:'S2',room:'Room B',tutor:'t1',cap:8,fee:2800,c:'var(--c1)',hw:'Quadratics, exercise 4.2'},
+ {id:'b4',name:'Class 10 Science',days:['Mon','Wed','Fri'],slot:'S1',room:'Room A',tutor:'t2',cap:8,fee:2600,c:'var(--c2)',hw:'Balance 15 chemical equations'}
+];
+var RAW=[
+ ['Hasini Reddy','b3','Mr. Srinivas Reddy','due',88,22,41],['Sai Teja Goud','b3','Mrs. Padma Goud','paid',94,23,45],['Charan Naidu','b3','Mr. Ramu Naidu','overdue',68,15,29],
+ ['Manasa Rao','b4','Mr. Venkatesh Rao','paid',91,21,40],['Pranavi Varma','b4','Mrs. Lakshmi Varma','due',79,18,34],['Akhil Yadav','b4','Mr. Suresh Yadav','paid',96,24,46],
+ ['Nikhil Chary','b1','Mr. Anil Chary','paid',85,20,38],['Sravya Kumar','b1','Mrs. Kavitha Kumar','due',72,17,30],['Rohith Sharma','b1','Mr. Ravi Sharma','paid',90,22,42],
+ ['Divya Patel','b2','Mr. Naresh Patel','paid',93,23,44],['Varun Goud','b2','Mrs. Swapna Goud','overdue',66,14,27],['Meghana Rao','b2','Mr. Bhaskar Rao','due',87,21,39]
+];
+var STUDENTS=[], att={}, recd={}, submitted={}, notified={}, rcpt=412, quiet=false;
+RAW.forEach(function(r,i){
+ var b=BATCHES.filter(function(x){return x.id===r[1]})[0];
+ STUDENTS.push({id:'S'+(i+1),name:r[0],batch:r[1],parent:r[2],fstat:r[3],att:r[4],marks:[r[5],r[6]],fee:{amount:b.fee,carry:r[3]==='overdue'?b.fee:0,paid:r[3]==='paid',cleared:0}});
+ att['S'+(i+1)]='P';
+});
+att.S8='A'; recd.S8='A'; submitted.b1=true; notified.S8=true;
+var MSGS=[
+ {when:'Thu 6:40 pm',to:'Class 10 Maths',text:'Weekly test on Tue 6 Oct. Syllabus: quadratics.',sids:['S1','S2','S3']},
+ {when:'Wed 12:30 pm',to:'Parents with dues',text:'The September fee is pending. Please pay by 10 Oct.',sids:['S3','S11']}
+];
+var QUERIES=[];
+var ENQ=[
+ {id:'e1',child:'Rishik',cls:'Class 9',batch:'b2',parent:'Mr. Narsimha',stage:0},
+ {id:'e2',child:'Hansika',cls:'Class 10',batch:'b4',parent:'Mrs. Rekha',stage:0},
+ {id:'e3',child:'Pavan',cls:'Class 8',batch:'b1',parent:'Mr. Sridhar',stage:1},
+ {id:'e4',child:'Meenakshi',cls:'Class 10',batch:'b3',parent:'Mrs. Usha',stage:1},
+ {id:'e5',child:'Ananya',cls:'Class 10',batch:'b3',parent:'Mrs. Latha',stage:2,done:true}
+];
+var MATS=[
+ {title:'Quadratics practice set',batch:'b3',type:'Worksheet'},
+ {title:'Motion formula sheet',batch:'b4',type:'Notes'},
+ {title:'Polynomials revision',batch:'b2',type:'Notes'}
+];
+var SUPPLIES=[['Benches',32,0],['Whiteboards',3,0],['Markers',4,1]];
+var ui={view:'overview',sb:'all',attB:'b3',feeF:'all',portal:'S1',scene:'S1',msgAud:'all',msgTpl:'fee',msgText:'',q:'',flash:'',pipeL:false,pipeR:false};
+var TPL={fee:'Dear parent, the fee for {student} is pending. Please pay by 10 Oct.',test:'Weekly test on {next}. Please make sure {student} attends.',custom:''};
+ui.msgText=TPL.fee;
+
+function B(id){return BATCHES.filter(function(b){return b.id===id})[0]}
+function T(id){return TUTORS.filter(function(t){return t.id===id})[0]}
+function S(id){return STUDENTS.filter(function(s){return s.id===id})[0]}
+function inB(id){return STUDENTS.filter(function(s){return s.batch===id})}
+function todays(){return BATCHES.filter(function(b){return b.days.indexOf(TODAY)>-1})}
+function out(s){return (s.fee.paid?0:s.fee.amount)+s.fee.carry}
+function fs(s){return s.fee.carry>0?'overdue':(s.fee.paid?'paid':'due')}
+function fpill(s){var k=fs(s);return '<span class="pill '+(k==='paid'?'good':k==='due'?'warn':'bad')+'">'+(k==='paid'?'Paid':k==='due'?'Due':'Overdue')+'</span>'}
+function first(s){return s.name.split(' ')[0]}
+function nextClass(b){for(var i=0;i<6;i++){if(b.days.indexOf(WEEK[i])>-1)return NEXT[WEEK[i]]}return ''}
+function logMsg(to,text,sids){MSGS.push({when:'Today '+now(),to:to,text:text,sids:sids||[]})}
+function payFee(s){var a=out(s);s.fee.cleared+=s.fee.carry;s.fee.carry=0;s.fee.paid=true;rcpt++;s.rcpt='AA/OCT/'+rcpt;
+ logMsg(first(s)+"'s parent",'Payment of '+INR(a)+' received. Receipt '+s.rcpt+'. Thank you.',[s.id]);return a}
+function toast(m){if(quiet)return;var t=$('#toast');t.textContent=m;t.hidden=false;clearTimeout(toast.h);toast.h=setTimeout(function(){t.hidden=true},3000)}
+function openModal(h){$('#modalCard').innerHTML=h;$('#modal').hidden=false;var f=$('#modalCard button,#modalCard input');if(f)f.focus()}
+function closeModal(){$('#modal').hidden=true}
+function fl(id){return ui.flash===id?' flash':''}
+
+function stats(){
+ var p=0,t=0,coll=0,due=0,over=0,overN=0;
+ todays().forEach(function(b){inB(b.id).forEach(function(s){t++;if(recd[s.id]!=='A')p++})});
+ STUDENTS.forEach(function(s){var k=fs(s);if(k==='paid')coll+=s.fee.amount+s.fee.cleared;else if(k==='due'){due+=out(s);coll+=s.fee.cleared}else{over+=out(s);overN++}});
+ return {pct:t?Math.round(p/t*100):0,p:p,t:t,coll:coll,due:due,over:over,overN:overN};
+}
+function ring(pct,cls){var C=2*Math.PI*52;return '<svg class="ring" viewBox="0 0 132 132" role="img" aria-label="'+pct+' percent"><circle class="trk" cx="66" cy="66" r="52"/><circle class="arc '+(cls||'')+'" cx="66" cy="66" r="52" transform="rotate(-90 66 66)" stroke-dasharray="'+(pct/100*C)+' '+C+'"/><text x="66" y="72">'+pct+'%</text></svg>'}
+function spark(vals){var W=300,H=84,pt=6,pb=18,ih=H-pt-pb,n=vals.length,sw=W/n,bw=sw*0.6,g='';
+ vals.forEach(function(v,i){var bh=v/100*ih,x=i*sw+(sw-bw)/2,y=pt+ih-bh;g+='<rect class="bar'+(i===n-1?' today':'')+'" x="'+x+'" y="'+y+'" width="'+bw+'" height="'+bh+'" rx="3"/>'+(i===n-1?'<text class="tick" x="'+(x+bw/2)+'" y="'+(H-4)+'" text-anchor="middle">Today</text>':'')});
+ return '<svg class="spark" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Attendance over seven sessions">'+g+'</svg>'}
+function stack(a,b,c){var t=(a+b+c)||1;return '<div class="stack" role="img" aria-label="Collected, due, overdue"><i style="width:'+(a/t*100)+'%;background:var(--good)"></i><i style="width:'+(b/t*100)+'%;background:var(--warn)"></i><i style="width:'+(c/t*100)+'%;background:var(--bad)"></i></div>'+
+ '<div class="legend"><span><i class="dot" style="background:var(--good)"></i><b class="num">'+INR(a)+'</b> paid</span><span><i class="dot" style="background:var(--warn)"></i><b class="num">'+INR(b)+'</b> due</span><span><i class="dot" style="background:var(--bad)"></i><b class="num">'+INR(c)+'</b> overdue</span></div>'}
+var SUBS={Overview:'Tutor taps, the parent is told, the owner sees it.',Admissions:'Enquiry to demo class to joined, with seats left.',Students:'Open any row for the full student file.',Attendance:'Tap a name to cycle present, late, absent. Submit alerts parents.',Fees:'Dues by student, one-tap receipts and reminders.',Timetable:'Two evening slots, Monday to Saturday, no clashes.',Staff:'Mark leave once and parents of today\'s classes are told.',Resources:'Study material, room use and supplies.',Messages:'Announcements and automatic alerts leave from one place.','Parent app':'What the family sees, from the same records.'};
+function hd(t,extra){return '<div class="vhead"><div><h3>'+t+'</h3>'+(SUBS[t]?'<p class="sub">'+SUBS[t]+'</p>':'')+'</div>'+(extra||'')+'</div>'}
+
+var views={};
+views.overview=function(){
+ var ss=inB('b3'),s=S(ui.scene),st=stats(),o=out(s),k=fs(s),
+  dirty=ss.some(function(x){return att[x.id]!==(recd[x.id]||'P')}),
+  msgs=MSGS.filter(function(m){return m.sids.indexOf(s.id)>-1}).slice(-4),
+  qs=QUERIES.filter(function(q){return q.sid===s.id}),
+  unans=QUERIES.filter(function(q){return !q.answered}),
+  pl=ui.pipeL?' go':'',pr=ui.pipeR?' go':'',items=[];
+ ui.pipeL=false;ui.pipeR=false;
+ if(st.overN)items.push('<li><div class="t"><b>'+st.overN+' overdue fee'+(st.overN>1?'s':'')+'</b><span>'+INR(st.over)+'</span></div><button class="btn sm" data-act="remindAll">Remind</button></li>');
+ unans.forEach(function(q){var x=S(q.sid);items.push('<li><div class="t"><b>Question from '+esc(first(x))+"'s parent</b><span>"+esc(q.text)+'</span></div><button class="btn sm" data-act="reply" data-id="'+q.id+'">Reply</button></li>')});
+ var tutor='<div class="scol"><div class="step"><i>1</i>Tutor</div><div class="panel"><h4>Class 10 Maths · 6:30 pm</h4><div class="roster">'+ss.map(function(x){var a=att[x.id]==='A';return '<button type="button" class="stu'+(a?' a':'')+(x.id===s.id?' sel':'')+'" data-act="sceneTog" data-sid="'+x.id+'"><b>'+esc(x.name)+'</b><span class="stat">'+(a?'Absent':'Present')+'</span></button>'}).join('')+'</div><button class="btn primary" data-act="submitAtt" data-id="b3"'+(dirty?'':' disabled')+'>'+(dirty?'Submit register':'Register sent')+'</button></div></div>';
+ var phone='<div class="scol"><div class="step"><i>2</i>Parent\'s phone</div><div class="phone'+fl('phone')+'"><div class="phone-top"><span>'+esc(s.parent)+'</span><small>Parent of '+esc(first(s))+'</small></div><div class="chat" id="chat">'+msgs.map(function(m){return '<div class="bubble">'+esc(m.text)+'<time>'+esc(m.when)+'</time></div>'}).join('')+qs.map(function(q){return '<div class="bubble me">'+esc(q.text)+'</div>'}).join('')+'</div><div class="pfee'+fl('fee')+'"><div><div class="hint">'+(k==='paid'?'Fees':k==='overdue'?'Overdue':'Due 10 Oct')+'</div><div class="big">'+(o?INR(o):'Paid')+'</div></div>'+(o?'<button class="btn primary sm" data-act="scenePay">Pay by UPI</button>':'<span class="pill good">Up to date</span>')+'</div><div class="pchips"><button type="button" class="chip" data-act="sask" data-q="0">Notes please?</button><button type="button" class="chip" data-act="sask" data-q="1">We will be late</button></div></div></div>';
+ var owner='<div class="scol"><div class="step"><i>3</i>Owner</div><div class="panel"><h4>Present today</h4><div class="ring-row'+fl('ring')+'">'+ring(st.pct)+'<div><div class="big">'+st.p+' of '+st.t+'</div></div></div>'+spark(HIST.concat([st.pct]))+'<h4>October fees</h4><div class="'+fl('fee')+'">'+stack(st.coll,st.due,st.over)+'</div><h4>Needs attention</h4><ul class="list">'+(items.join('')||'<li><span class="muted">All clear</span></li>')+'</ul></div></div>';
+ return hd('Overview')+'<div class="scene">'+tutor+'<div class="pipe'+pl+'" aria-hidden="true"><b></b></div>'+phone+'<div class="pipe'+pr+'" aria-hidden="true"><b></b></div>'+owner+'</div>';
+};
+views.admissions=function(){
+ var cols=['New','Demo class','Joined'];
+ return hd('Admissions')+'<div class="kanban">'+cols.map(function(c,i){var es=ENQ.filter(function(e){return e.stage===i});
+  return '<div class="kcol"><h4>'+c+'<span class="muted num">'+es.length+'</span></h4>'+es.map(function(e){var b=B(e.batch),left=b.cap-inB(b.id).length;
+   return '<div class="enq"><b>'+esc(e.child)+' · '+e.cls+'</b><div><span class="meter w pr"><i style="width:'+((b.cap-left)/b.cap*100)+'%"></i></span><span class="hint">'+left+' seats left</span></div>'+(i<2?'<button class="btn sm" data-act="moveEnq" data-id="'+e.id+'">'+(i===0?'Book demo':'Admit')+'</button>':'<span class="pill good">Student added</span>')+'</div>'}).join('')+'</div>'}).join('')+'</div>';
+};
+function stuRows(){
+ var q=ui.q.trim().toLowerCase();
+ var rows=STUDENTS.filter(function(s){return (ui.sb==='all'||s.batch===ui.sb)&&(!q||(s.name+s.parent).toLowerCase().indexOf(q)>-1)});
+ if(!rows.length)return '<tr><td colspan="3" class="muted">No match</td></tr>';
+ return rows.map(function(s){return '<tr class="click" tabindex="0" data-act="openStudent" data-id="'+s.id+'"><td><b>'+esc(s.name)+'</b></td><td class="num"><span class="meter'+(s.att<75?' low':'')+'"><i style="width:'+s.att+'%"></i></span>'+s.att+'%</td><td>'+fpill(s)+'</td></tr>'}).join('');
+}
+views.students=function(){
+ return hd('Students','<button class="btn primary" data-act="openAdd">Add student</button>')+
+ '<div class="row"><div class="field"><label for="fq">Search</label><input type="search" id="fq" data-in="q" value="'+esc(ui.q)+'"></div></div>'+
+ '<div class="chips"><button class="chip" aria-pressed="'+(ui.sb==='all')+'" data-act="sb" data-v="all">All</button>'+BATCHES.map(function(b){return '<button class="chip" aria-pressed="'+(ui.sb===b.id)+'" data-act="sb" data-v="'+b.id+'">'+b.name+'</button>'}).join('')+'</div>'+
+ '<div class="tbl-wrap"><table><thead><tr><th>Student</th><th>Attendance</th><th>Fees</th></tr></thead><tbody id="stuRows">'+stuRows()+'</tbody></table></div>';
+};
+views.attendance=function(){
+ var tds=todays();if(!tds.some(function(b){return b.id===ui.attB}))ui.attB=tds[0].id;
+ var b=B(ui.attB),ss=inB(b.id),a=ss.filter(function(s){return att[s.id]==='A'}).length;
+ return hd('Attendance','<span class="pill info">Sat 3 Oct</span>')+
+ '<div class="chips">'+tds.map(function(x){return '<button class="chip" aria-pressed="'+(x.id===ui.attB)+'" data-act="attB" data-v="'+x.id+'">'+x.name+(submitted[x.id]?' ✓':'')+'</button>'}).join('')+'</div>'+
+ '<div class="panel"><div class="ring-row">'+ring(Math.round((ss.length-a)/ss.length*100),a?'':'g')+'<div><div class="big">'+(ss.length-a)+' of '+ss.length+'</div><div class="hint">present</div></div></div>'+
+ '<div class="roster">'+ss.map(function(s){var v=att[s.id];return '<button type="button" class="stu '+v.toLowerCase()+'" data-act="cycle" data-sid="'+s.id+'"><b>'+esc(s.name)+'</b><span class="stat">'+(v==='P'?'Present':v==='L'?'Late':'Absent')+'</span></button>'}).join('')+'</div>'+
+ '<button class="btn primary" data-act="submitAtt" data-id="'+b.id+'">Submit and notify parents</button></div>';
+};
+views.fees=function(){
+ var st=stats(),f=ui.feeF,ord={overdue:0,due:1,paid:2};
+ var rows=STUDENTS.filter(function(s){return f==='all'||fs(s)===f}).sort(function(x,y){return ord[fs(x)]-ord[fs(y)]});
+ return hd('Fees','<button class="btn primary" data-act="remindAll"'+(st.overN?'':' disabled')+'>Remind overdue</button>')+
+ '<div class="panel"><div class="'+fl('fee')+'">'+stack(st.coll,st.due,st.over)+'</div></div>'+
+ '<div class="chips">'+['all','overdue','due','paid'].map(function(k){return '<button class="chip" aria-pressed="'+(f===k)+'" data-act="feeF" data-v="'+k+'">'+k[0].toUpperCase()+k.slice(1)+'</button>'}).join('')+'</div>'+
+ '<div class="panel"><ul class="list">'+rows.map(function(s){var k=fs(s);return '<li><div class="t"><b>'+esc(s.name)+'</b><span>'+(k==='paid'?(s.rcpt||'Paid'):INR(out(s)))+'</span></div><div class="row">'+fpill(s)+(k==='paid'?'':'<button class="btn sm" data-act="pay" data-id="'+s.id+'">Record</button>')+'</div></li>'}).join('')+'</ul></div>';
+};
+views.timetable=function(){
+ var head='<tr><th></th>'+WEEK.map(function(d){return '<th class="'+(d===TODAY?'today':'')+'">'+d+'</th>'}).join('')+'</tr>';
+ var body=['S1','S2'].map(function(sl){return '<tr><td><b>'+SLOT[sl]+'</b></td>'+WEEK.map(function(d){var bs=BATCHES.filter(function(b){return b.slot===sl&&b.days.indexOf(d)>-1});
+  return '<td class="'+(d===TODAY?'today':'')+'">'+bs.map(function(b){return '<div class="blk" style="background:'+b.c+'">'+b.name.replace('Class ','C')+'<span>'+b.room+'</span></div>'}).join('')+'</td>'}).join('')+'</tr>'}).join('');
+ return hd('Timetable')+'<div class="tbl-wrap"><table class="tt"><thead>'+head+'</thead><tbody>'+body+'</tbody></table></div>'+
+ '<div class="cards">'+BATCHES.map(function(b){var n=inB(b.id).length;return '<div class="card" style="border-top:4px solid '+b.c+'"><b>'+b.name+'</b><span class="meter w pr"><i style="width:'+(n/b.cap*100)+'%"></i></span><div class="row sb"><span class="hint">'+n+' of '+b.cap+' seats</span><b class="num">'+INR(b.fee)+'</b></div></div>'}).join('')+'</div>';
+};
+views.staff=function(){
+ var tot=TUTORS.reduce(function(a,t){return a+t.salary},0),paid=TUTORS.filter(function(t){return t.paid}).reduce(function(a,t){return a+t.salary},0);
+ return hd('Staff')+'<div class="panel"><h4>September payroll</h4>'+stack(paid,tot-paid,0).replace('overdue','pending')+'</div>'+
+ '<div class="cards">'+TUTORS.map(function(t){return '<div class="card"><div class="row"><span class="av" style="background:'+t.c+'">'+t.name[0]+'</span><div><b>'+esc(t.name)+'</b><div class="hint">'+t.sub+'</div></div></div><div class="row sb"><span class="pill '+(t.leave?'warn':'good')+'">'+(t.leave?'On leave':'In today')+'</span><span class="pill '+(t.paid?'good':'warn')+'">'+(t.paid?'Paid':'Pending')+'</span></div><div class="row"><button class="btn sm" data-act="leave" data-id="'+t.id+'">'+(t.leave?'Back in':'Mark leave')+'</button>'+(t.paid?'':'<button class="btn sm" data-act="paySalary" data-id="'+t.id+'">Pay</button>')+'</div></div>'}).join('')+'</div>';
+};
+views.resources=function(){
+ var rooms=['Room A','Room B'].map(function(r){var n=0;BATCHES.forEach(function(b){if(b.room===r)n+=b.days.length});return [r,Math.round(n/12*100)]});
+ return hd('Resources')+'<div class="grid2"><div class="panel"><h4>Study material</h4><ul class="list">'+MATS.map(function(m){return '<li><div class="t"><b>'+esc(m.title)+'</b><span>'+B(m.batch).name+'</span></div><span class="pill info">'+m.type+'</span></li>'}).join('')+'</ul>'+
+  '<form id="uploadForm" class="row"><input type="text" id="ut" placeholder="Title" required style="flex:1 1 120px"><select id="ub">'+BATCHES.map(function(b){return '<option value="'+b.id+'">'+b.name+'</option>'}).join('')+'</select><button class="btn primary sm" type="submit">Share</button></form></div>'+
+  '<div class="panel"><h4>Rooms this week</h4>'+rooms.map(function(r){return '<div><div class="row sb"><span>'+r[0]+'</span><b class="num">'+r[1]+'%</b></div><span class="meter w pr"><i style="width:'+r[1]+'%"></i></span></div>'}).join('')+'<h4>Supplies</h4><ul class="list">'+SUPPLIES.map(function(s){return '<li><span>'+s[0]+'</span><span class="pill '+(s[2]?'bad':'good')+'">'+s[1]+(s[2]?' · reorder':'')+'</span></li>'}).join('')+'</ul></div></div>';
+};
+function audience(){var a=ui.msgAud;if(a==='all')return STUDENTS;if(a==='overdue')return STUDENTS.filter(function(s){return fs(s)==='overdue'});return inB(a)}
+views.messages=function(){
+ var aud=audience();
+ return hd('Messages')+'<div class="two"><div style="display:grid;gap:14px;min-width:0"><form class="panel" id="composeForm"><div class="row"><div class="field"><label for="ma">To</label><select id="ma" data-in="msgAud"><option value="all"'+(ui.msgAud==='all'?' selected':'')+'>All parents</option><option value="overdue"'+(ui.msgAud==='overdue'?' selected':'')+'>Overdue fees</option>'+BATCHES.map(function(b){return '<option value="'+b.id+'"'+(ui.msgAud===b.id?' selected':'')+'>'+b.name+'</option>'}).join('')+'</select></div>'+
+  '<div class="field"><label for="mt">Template</label><select id="mt" data-in="msgTpl">'+[['fee','Fee reminder'],['test','Test notice'],['custom','Custom']].map(function(o){return '<option value="'+o[0]+'"'+(ui.msgTpl===o[0]?' selected':'')+'>'+o[1]+'</option>'}).join('')+'</select></div></div>'+
+  '<textarea id="mx" data-in="msgText" aria-label="Message" required>'+esc(ui.msgText)+'</textarea><div class="row sb"><span class="pill info">'+aud.length+' parents</span><button class="btn primary" type="submit"'+(aud.length?'':' disabled')+'>Send</button></div></form>'+
+  (QUERIES.length?'<div class="panel"><h4>Parent questions</h4><ul class="list">'+QUERIES.map(function(q){var s=S(q.sid);return '<li><div class="t"><b>'+esc(first(s))+"'s parent</b><span>"+esc(q.text)+'</span></div>'+(q.answered?'<span class="pill good">Answered</span>':'<button class="btn sm" data-act="reply" data-id="'+q.id+'">Reply</button>')+'</li>'}).join('')+'</ul></div>':'')+'</div>'+
+  '<div class="phone"><div class="phone-top"><span>Akshara Academy</span><small>Parent\'s phone</small></div><div class="chat" id="chat">'+MSGS.slice(-6).map(function(m){return '<div class="bubble"><div class="hint">To: '+esc(m.to)+'</div>'+esc(m.text)+'<time>'+esc(m.when)+'</time></div>'}).join('')+'</div></div></div>';
+};
+views.portal=function(){
+ var s=S(ui.portal),b=B(s.batch),k=fs(s),o=out(s),dots='';
+ for(var i=0;i<10;i++){dots+='<i class="'+(((s.id.charCodeAt(1)*7+i*37)%100)>=s.att?'a':'')+'"></i>'}
+ var tv=b.days.indexOf(TODAY)>-1?att[s.id]:null, msgs=MSGS.filter(function(m){return m.sids.indexOf(s.id)>-1}).slice(-2), qs=QUERIES.filter(function(q){return q.sid===s.id});
+ return hd('Parent app','<div class="field"><label for="ps" class="hint">Parent of</label><select id="ps" data-in="portal">'+STUDENTS.map(function(x){return '<option value="'+x.id+'"'+(x.id===ui.portal?' selected':'')+'>'+esc(x.name)+'</option>'}).join('')+'</select></div>')+
+ '<div class="phone"><div class="phone-top"><span>'+esc(s.parent)+'</span><small>Akshara Academy</small></div><div class="screen">'+
+  '<div class="pcard"><b style="font-size:16px">'+esc(s.name)+'</b><span class="hint">'+b.name+' · Next '+nextClass(b)+'</span></div>'+
+  '<div class="pcard"><div class="row sb"><span class="lab">Attendance</span>'+(tv?'<span class="pill '+(tv==='A'?'bad':tv==='L'?'warn':'good')+'">Today: '+(tv==='A'?'Absent':tv==='L'?'Late':'Present')+'</span>':'')+'</div><div class="row">'+'<span class="big">'+s.att+'%</span><div class="dots">'+dots+'</div></div></div>'+
+  '<div class="pcard'+fl('pfee')+'"><div class="row sb"><span class="lab">Fees</span>'+fpill(s)+'</div>'+(o?'<div class="big">'+INR(o)+'</div><button class="btn primary" data-act="portalPay" data-id="'+s.id+'">Pay by UPI</button>':'<span class="hint">Receipt '+(s.rcpt||'on file')+'</span>')+'</div>'+
+  '<div class="pcard"><span class="lab">Homework</span><span>'+b.hw+'</span></div>'+
+  '<div class="pcard"><span class="lab">Latest test</span><div class="row sb"><span class="meter w pr" style="flex:1"><i style="width:'+(s.marks[1]/50*100)+'%"></i></span><b class="num">'+s.marks[1]+' / 50</b></div></div>'+
+  '<div class="pcard"><span class="lab">From the academy</span>'+(msgs.map(function(m){return '<div class="bubble">'+esc(m.text)+'<time>'+esc(m.when)+'</time></div>'}).join('')||'<span class="hint">Nothing yet</span>')+
+   qs.map(function(q){return '<div class="bubble me">'+esc(q.text)+'</div>'+(q.answered?'<div class="bubble">'+esc(q.reply)+'</div>':'')}).join('')+'</div>'+
+  '<div class="chips"><button class="chip" data-act="ask" data-q="0">Can we get today\'s notes?</button><button class="chip" data-act="ask" data-q="1">We will be late tomorrow</button></div></div></div>';
+};
+
+var NAV=[['overview','Overview'],['admissions','Admissions'],['students','Students'],['attendance','Attendance'],['fees','Fees'],['timetable','Timetable'],['staff','Staff'],['resources','Resources'],['messages','Messages'],['portal','Parent app']];
+function badge(id){var n=0;
+ if(id==='fees')n=stats().overN;
+ if(id==='admissions')n=ENQ.filter(function(e){return e.stage===0}).length;
+ if(id==='attendance')n=todays().filter(function(b){return !submitted[b.id]}).length;
+ if(id==='messages')n=QUERIES.filter(function(q){return !q.answered}).length;
+ return n>0?'<span class="bdg">'+n+'</span>':''}
+function render(){
+ $('#side').innerHTML=NAV.map(function(n){return '<button type="button" class="navbtn'+(ui.view===n[0]?' on':'')+'" data-act="go" data-v="'+n[0]+'">'+n[1]+badge(n[0])+'</button>'}).join('');
+ $('#app').innerHTML=views[ui.view]();ui.flash='';
+ var c=$('#chat');if(c)c.scrollTop=c.scrollHeight;
+}
+function go(v){ui.view=v;render();var sh=$('.shell');if(sh.getBoundingClientRect().top<60)sh.scrollIntoView({block:'start'})}
+
+var QTXT=["Can we get today's notes?",'We will be late tomorrow'], QREP=['Notes are in the parent app now.','No problem, noted. Thank you.'];
+var acts={
+ go:function(d){go(d.v)},
+ sceneTog:function(d){var s=S(d.sid);att[s.id]=att[s.id]==='A'?'P':'A';ui.scene=s.id;render()},
+ scenePay:function(){var s=S(ui.scene);if(!out(s))return;var a=payFee(s);ui.flash='fee';ui.pipeR=true;render();toast('Receipt '+s.rcpt+' for '+INR(a))},
+ sask:function(d){var i=+d.q;QUERIES.push({id:'q'+(QUERIES.length+1),sid:ui.scene,text:QTXT[i],qi:i,answered:false,reply:''});ui.pipeR=true;render();toast('Question sent to the academy')},
+ tour:function(){if(touring){stop();cap(DCAP)}else startTour()},
+ runScene:function(){stop();restore();ui.view='overview';render();runScene(function(){quiet=false;cap(DCAP)})},
+ reset:function(){stop();restore();render();cap(DCAP)},
+ closeModal:closeModal,
+ sb:function(d){ui.sb=d.v;render()},
+ feeF:function(d){ui.feeF=d.v;render()},
+ attB:function(d){ui.attB=d.v;render()},
+ openReg:function(d){ui.attB=d.id;go('attendance')},
+ cycle:function(d){var o={P:'L',L:'A',A:'P'};att[d.sid]=o[att[d.sid]];submitted[S(d.sid).batch]=false;render()},
+ submitAtt:function(d){var b=B(d.id),abs=inB(b.id).filter(function(s){return att[s.id]==='A'&&!notified[s.id]});
+  abs.forEach(function(s){notified[s.id]=true;logMsg(first(s)+"'s parent",first(s)+' was absent from '+b.name+' today. Is everything fine?',[s.id])});
+  inB(b.id).forEach(function(s){recd[s.id]=att[s.id]});submitted[b.id]=true;ui.flash='ring';ui.pipeL=true;ui.pipeR=true;if(abs.length)ui.scene=abs[abs.length-1].id;render();toast('Register saved. '+abs.length+(abs.length===1?' parent':' parents')+' notified.')},
+ pay:function(d){var s=S(d.id),a=payFee(s);ui.flash='fee';render();toast('Receipt '+s.rcpt+' for '+INR(a))},
+ portalPay:function(d){var s=S(d.id),a=payFee(s);ui.flash='pfee';render();toast('Paid '+INR(a)+'. Owner ledger updated.')},
+ remindAll:function(){var ss=STUDENTS.filter(function(s){return fs(s)==='overdue'});if(!ss.length)return;
+  logMsg(ss.length+' parents','Your fee is overdue. Please pay using the UPI link.',ss.map(function(s){return s.id}));toast('Reminders sent to '+ss.length+' parents')},
+ leave:function(d){var t=T(d.id);t.leave=!t.leave;
+  if(t.leave){var bs=todays().filter(function(b){return b.tutor===t.id});bs.forEach(function(b){logMsg(b.name,t.name+' is on leave today. We will share the new time.',inB(b.id).map(function(s){return s.id}))});toast(bs.length?'Parents of '+bs.length+' class'+(bs.length>1?'es':'')+' notified':'Marked on leave')}
+  render()},
+ paySalary:function(d){T(d.id).paid=true;toast('Salary recorded');render()},
+ moveEnq:function(d){var e=ENQ.filter(function(x){return x.id===d.id})[0];e.stage++;
+  if(e.stage===2&&!e.done){e.done=true;var b=B(e.batch),n=STUDENTS.length+1,s={id:'S'+n,name:e.child+' (new)',batch:b.id,parent:e.parent,fstat:'due',att:100,marks:[0,0],fee:{amount:b.fee,carry:0,paid:false,cleared:0}};STUDENTS.push(s);att[s.id]='P';logMsg(e.parent,'Welcome, '+e.child+'. First class: '+nextClass(b)+'.',[s.id]);toast(e.child+' added to '+b.name)}
+  else toast('Demo class booked');render()},
+ reply:function(d){var q=QUERIES.filter(function(x){return x.id===d.id})[0],s=S(q.sid);q.answered=true;q.reply=QREP[q.qi];logMsg(first(s)+"'s parent",q.reply,[s.id]);ui.flash='phone';toast('Reply sent');render()},
+ ask:function(d){var i=+d.q;QUERIES.push({id:'q'+(QUERIES.length+1),sid:ui.portal,text:QTXT[i],qi:i,answered:false,reply:''});render();toast('Sent to the academy. See Overview or Messages.')},
+ openStudent:function(d){var s=S(d.id),b=B(s.batch);
+  openModal('<div class="row sb"><h3>'+esc(s.name)+'</h3>'+fpill(s)+'</div><div class="ring-row">'+ring(s.att,s.att<75?'b':'g')+'<div><div class="hint">'+b.name+'</div><div class="hint">'+esc(s.parent)+'</div></div></div>'+
+   '<div><span class="lab">Latest test</span><div class="row sb"><span class="meter w pr" style="flex:1"><i style="width:'+(s.marks[1]/50*100)+'%"></i></span><b class="num">'+s.marks[1]+' / 50</b></div></div>'+
+   '<div class="row">'+(out(s)?'<button class="btn" data-act="payClose" data-id="'+s.id+'">Record '+INR(out(s))+'</button>':'')+'<button class="btn" data-act="progress" data-id="'+s.id+'">Send progress</button><button class="btn primary" data-act="closeModal">Close</button></div>')},
+ payClose:function(d){var s=S(d.id);payFee(s);closeModal();render();toast('Receipt '+s.rcpt+' issued')},
+ progress:function(d){var s=S(d.id);logMsg(first(s)+"'s parent",'Progress: attendance '+s.att+'%, latest test '+s.marks[1]+'/50.',[s.id]);closeModal();toast('Progress update sent')},
+ openAdd:function(){openModal('<h3>Add student</h3><form id="addForm" style="display:grid;gap:10px"><div class="field"><label for="an">Name</label><input type="text" id="an" required></div><div class="field"><label for="ab2">Batch</label><select id="ab2">'+BATCHES.map(function(b){return '<option value="'+b.id+'">'+b.name+'</option>'}).join('')+'</select></div><div class="field"><label for="ap">Parent</label><input type="text" id="ap" required></div><div class="row"><button class="btn primary" type="submit">Add and welcome</button><button class="btn" type="button" data-act="closeModal">Cancel</button></div></form>')}
+};
+document.addEventListener('click',function(e){if(e.target===$('#modal')){closeModal();return}var el=e.target.closest('[data-act]');if(el&&acts[el.dataset.act]){var a=el.dataset.act;if(timers.length&&a!=='tour'&&a!=='runScene'&&a!=='reset'){stop();cap(DCAP)}acts[a](el.dataset)}});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!$('#modal').hidden)closeModal();if(e.key==='Enter'){var tr=e.target.closest&&e.target.closest('tr[data-act]');if(tr)tr.click()}});
+document.addEventListener('input',function(e){var k=e.target.dataset&&e.target.dataset.in;if(k==='q'){ui.q=e.target.value;$('#stuRows').innerHTML=stuRows()}else if(k==='msgText')ui.msgText=e.target.value});
+document.addEventListener('change',function(e){var k=e.target.dataset&&e.target.dataset.in;if(!k||k==='q'||k==='msgText')return;ui[k]=e.target.value;if(k==='msgTpl')ui.msgText=TPL[e.target.value];render()});
+document.addEventListener('submit',function(e){e.preventDefault();var id=e.target.id;
+ if(id==='addForm'){var b=B($('#ab2').value),n=STUDENTS.length+1,nm=$('#an').value.trim(),pn=$('#ap').value.trim(),s={id:'S'+n,name:nm,batch:b.id,parent:pn,fstat:'due',att:100,marks:[0,0],fee:{amount:b.fee,carry:0,paid:false,cleared:0}};
+  STUDENTS.push(s);att[s.id]='P';logMsg(pn,'Welcome, '+nm+'. First class: '+nextClass(b)+'.',[s.id]);closeModal();ui.sb='all';ui.q='';render();toast(nm+' added')}
+ else if(id==='uploadForm'){var t=$('#ut').value.trim(),bb=$('#ub').value,ss=inB(bb);MATS.unshift({title:t,batch:bb,type:'Notes'});logMsg(B(bb).name,'New notes shared: '+t+'.',ss.map(function(x){return x.id}));render();toast('Shared with '+ss.length+' parents')}
+ else if(id==='composeForm'){var aud=audience(),tx=ui.msgText.trim();if(!aud.length||!tx)return;
+  var s0=aud[0];logMsg(aud.length+' parents',tx.replace('{student}',first(s0)).replace('{next}',nextClass(B(s0.batch))),aud.map(function(x){return x.id}));render();toast('Sent to '+aud.length+' parents')}
+});
+var SNAP=JSON.stringify({STUDENTS:STUDENTS,att:att,recd:recd,submitted:submitted,notified:notified,MSGS:MSGS,QUERIES:QUERIES,ENQ:ENQ,TUTORS:TUTORS,MATS:MATS});
+function restore(){
+ var o=JSON.parse(SNAP);
+ [['STUDENTS',STUDENTS],['MSGS',MSGS],['QUERIES',QUERIES],['ENQ',ENQ],['TUTORS',TUTORS],['MATS',MATS]].forEach(function(p){p[1].length=0;o[p[0]].forEach(function(x){p[1].push(x)})});
+ [['att',att],['recd',recd],['submitted',submitted],['notified',notified]].forEach(function(p){Object.keys(p[1]).forEach(function(k){delete p[1][k]});Object.keys(o[p[0]]).forEach(function(k){p[1][k]=o[p[0]][k]})});
+ rcpt=412;ui.scene='S1';ui.portal='S1';ui.sb='all';ui.q='';ui.feeF='all';ui.msgAud='all';ui.msgTpl='fee';ui.msgText=TPL.fee;ui.attB='b3';ui.flash='';
+}
+var DCAP='Press Play tour to watch every screen run, or click anything.';
+var timers=[],touring=false;
+function later(fn,ms){timers.push(setTimeout(fn,ms))}
+function cap(t){$('#capText').textContent=t}
+function prog(p){$('#prog i').style.width=p+'%'}
+function stop(){timers.forEach(clearTimeout);timers=[];touring=false;quiet=false;$('#tourBtn').textContent='Play tour';prog(0)}
+function runScene(done){
+ var seq=[
+  [0,'Tutor marks Charan absent',function(){ui.view='overview';ui.scene='S3';att.S3='A';render()}],
+  [1800,'Register submitted. The parent is told instantly',function(){acts.submitAtt({id:'b3'})}],
+  [3600,'The parent sees the alert on their phone',function(){ui.flash='phone';render()}],
+  [5400,'The owner\'s attendance ring updates',function(){ui.flash='ring';render()}],
+  [7200,'The parent pays the overdue fee by UPI',function(){acts.scenePay()}],
+  [9000,'Receipt issued. The fee bar moves',function(){ui.flash='fee';render()}],
+  [10800,'The parent asks a question',function(){acts.sask({q:'0'})}],
+  [12600,'The owner replies in one tap',function(){acts.reply({id:QUERIES[QUERIES.length-1].id})}],
+  [14400,'Everything is recorded in one place',function(){}]
+ ];
+ quiet=true;
+ seq.forEach(function(x){later(function(){cap(x[1]);x[2]()},x[0])});
+ later(done,15800);
+}
+var TOUR=[
+ ['overview'],
+ ['admissions','Admissions: enquiry to demo class to joined',function(){acts.moveEnq({id:'e1'})}],
+ ['students','Students: one searchable file per child',function(){ui.sb='b3'}],
+ ['attendance','Attendance: one tap per student, parents alerted',function(){ui.attB='b3';acts.cycle({sid:'S1'});acts.cycle({sid:'S1'})}],
+ ['fees','Fees: dues, receipts and reminders',function(){acts.pay({id:'S11'})}],
+ ['timetable','Timetable: no room or tutor clashes'],
+ ['staff','Staff: leave marked once, parents informed',function(){acts.leave({id:'t3'})}],
+ ['resources','Resources: material, rooms and supplies'],
+ ['messages','Messages: announcements from one place',function(){acts.remindAll()}],
+ ['portal','Parent app: what the family sees',function(){ui.portal='S3'}]
+];
+function startTour(){restore();touring=true;quiet=true;$('#tourBtn').textContent='Stop tour';$('#demo').scrollIntoView({block:'start'});tourStep(0)}
+function tourStep(i){
+ if(!touring)return;
+ if(i>=TOUR.length){stop();cap('Tour finished. Everything above is clickable.');return}
+ prog((i+1)/TOUR.length*100);
+ var t=TOUR[i];
+ if(i===0){ui.view='overview';render();runScene(function(){tourStep(1)});return}
+ ui.view=t[0];render();cap(t[1]);
+ if(t[2])later(function(){t[2]();render()},1300);
+ later(function(){tourStep(i+1)},4300);
+}
+(function hub(){
+ var N=[['Admissions','admissions'],['Attendance','attendance'],['Fees','fees'],['Timetable','timetable'],['Staff','staff'],['Resources','resources'],['Messages','messages'],['Parent app','portal']];
+ var cx=300,cy=170,rx=215,ry=125,g='',nodes='';
+ N.forEach(function(n,i){
+  var a=-Math.PI/2+i*2*Math.PI/N.length,x=cx+rx*Math.cos(a),y=cy+ry*Math.sin(a);
+  g+='<line x1="'+cx+'" y1="'+cy+'" x2="'+x.toFixed(1)+'" y2="'+y.toFixed(1)+'"/>';
+  nodes+='<g data-act="go" data-v="'+n[1]+'" tabindex="0" role="button" aria-label="Open '+n[0]+'"><rect class="nd" x="'+(x-62).toFixed(1)+'" y="'+(y-18).toFixed(1)+'" width="124" height="36" rx="18"/><text x="'+x.toFixed(1)+'" y="'+(y+4.5).toFixed(1)+'">'+n[0]+'</text></g>';
+ });
+ $('#hub').innerHTML=g+'<circle class="core" cx="'+cx+'" cy="'+cy+'" r="46"/><text class="ct" x="'+cx+'" y="'+(cy-2)+'">Student</text><text class="ct" x="'+cx+'" y="'+(cy+15)+'">record</text>'+nodes;
+})();
+document.addEventListener('keydown',function(e){if(e.key==='Enter'){var g=e.target.closest&&e.target.closest('g[data-act]');if(g)acts[g.dataset.act](g.dataset)}});
+render();
+})();
+</script>
+
+</body></html>
